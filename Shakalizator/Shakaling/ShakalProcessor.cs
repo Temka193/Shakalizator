@@ -62,7 +62,6 @@ namespace Shakalizator.Shakaling
                     Console.WriteLine(res);
 
                     api.SendTextMessage(chatId, "Зашакаливание завершено:)");
-                    session.CurrentHandler = session.DefaultHandler;
                 }
                 catch
                 {
@@ -75,6 +74,8 @@ namespace Shakalizator.Shakaling
 
                     }
                 }
+
+                session.CurrentHandler = session.DefaultHandler;
             }).Start();
         }
     }
