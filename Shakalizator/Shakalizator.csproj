@@ -96,6 +96,7 @@
     <Compile Include="Shakaling\Shakaler.cs" />
     <Compile Include="Shakaling\ShakalSession.cs" />
     <Compile Include="Shakaling\ShakalProcessor.cs" />
+    <Compile Include="TelegramCore\Emoji.cs" />
     <Compile Include="TelegramCore\TelegramLogic.cs" />
     <Compile Include="TelegramCore\TelegramMessageHandler.cs" />
     <Compile Include="TelegramCore\TelegramSession.cs" />

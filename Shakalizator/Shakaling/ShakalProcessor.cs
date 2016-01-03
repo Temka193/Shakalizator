@@ -28,7 +28,7 @@ namespace Shakalizator.Shakaling
         }
         public override TelegramMessageHandler CommandStart(ShakalSession session, Api api, Message message, object state)
         {
-            api.SendTextMessage(message.Chat.Id, "Зашакаливание скоро будет завершено",
+            api.SendTextMessage(message.Chat.Id, "Зашакаливание скоро будет завершено. Обычно это занимает несколько секунд, но если я не буду отвечать, то попробуйте зашакалить картинку снова" + Emoji.GetEmoji(0x1F60C),
                 false,
                 0,
                 new ReplyKeyboardHide
