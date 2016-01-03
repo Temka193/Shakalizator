@@ -32,7 +32,9 @@ namespace Shakalizator.Shakaling
             {
                 return new PhotoShakalingCommand(new[] { message.Document }).CommandStart(session, api, message, state);
             }
-            return CommandHelp(session, api, message, state);
+
+            if (message.Chat.Type == ChatType.Private) return CommandHelp(session, api, message, state);
+            else return this;
         }
     }
 }
