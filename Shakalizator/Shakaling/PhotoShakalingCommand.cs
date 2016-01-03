@@ -22,7 +22,7 @@ namespace Shakalizator.Shakaling
             {
                 if (file.FileSize > Config.ImageMaxSize)
                 {
-                    api.SendTextMessage(message.Chat.Id, "Изображение превысило допустимый размер.");
+                    api.SendTextMessage(message.Chat.Id, "Изображение превысило допустимый размер");
                     return session.DefaultHandler;
                 }
             }

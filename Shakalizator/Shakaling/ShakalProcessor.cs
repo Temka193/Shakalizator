@@ -61,13 +61,13 @@ namespace Shakalizator.Shakaling
                     var res = api.SendDocument(chatId, new FileToSend(fileName, shakaled)).Result;
                     Console.WriteLine(res);
 
-                    api.SendTextMessage(chatId, "Зашакаливание завершено:)");
+                    api.SendTextMessage(chatId, "Зашакаливание завершено" + Emoji.GetEmoji(0x1F438));
                 }
                 catch
                 {
                     try
                     {
-                        api.SendTextMessage(chatId, "Ошибка при зашакаливании:(");
+                        api.SendTextMessage(chatId, "Ошибка при зашакаливании" + Emoji.GetEmoji(0x1F614));
                     }
                     catch
                     {
