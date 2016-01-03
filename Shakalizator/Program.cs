@@ -24,7 +24,7 @@ namespace Shakalizator
             var bot = new ShakalBot(token);
             bot.Start();
 
-            while (true) Thread.Sleep(1000000); 
+            while (true) Thread.Sleep(1000000);
         }
     }
 }
