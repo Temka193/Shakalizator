@@ -13,7 +13,7 @@ namespace Shakalizator.Shakaling
     public class ShakalBot
     {
         public int LastUpdateId { get; private set; }
-        public Api Api { get; private set; }
+        public TelegramBotClient Api { get; private set; }
 
         public TelegramLogic<ShakalSession> Logic { get; private set; }
         public string Token { get; private set; }
@@ -22,14 +22,14 @@ namespace Shakalizator.Shakaling
         {
             Token = token;
 
-            Api = new Api(token);
+            Api = new TelegramBotClient(token);
             Logic = new TelegramLogic<ShakalSession>();
         }
         public bool Start()
         {
             try
             {
-                var me = Api.GetMe().Result;
+                var me = Api.GetMeAsync().Result;
                 Console.WriteLine("{0}: {1}", me.Username, me.Id);
             }
             catch
@@ -47,7 +47,7 @@ namespace Shakalizator.Shakaling
             {
                 try
                 {
-                    var updates = Api.GetUpdates(offset).Result;
+                    var updates = Api.GetUpdatesAsync(offset).Result;
                     foreach (var update in updates)
                     {
                         offset = update.Id + 1;

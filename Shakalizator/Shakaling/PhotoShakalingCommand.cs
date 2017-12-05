@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Shakalizator.TelegramCore;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shakalizator.Shakaling
 {
@@ -16,38 +18,40 @@ namespace Shakalizator.Shakaling
         {
             Files = files;
         }
-        public override TelegramMessageHandler CommandStart(ShakalSession session, Api api, Message message, object state)
+        public override TelegramMessageHandler CommandStart(ShakalSession session, TelegramBotClient api, Message message, object state)
         {
             foreach (var file in Files)
             {
                 if (file.FileSize > Config.ImageMaxSize)
                 {
-                    api.SendTextMessage(message.Chat.Id, "Изображение превысило допустимый размер");
+                    api.SendTextMessageAsync(message.Chat.Id, "Изображение превысило допустимый размер");
                     return session.DefaultHandler;
                 }
             }
-            api.SendTextMessage(message.Chat.Id, "Отлично, а теперь укажите уровень шакализации (целое число от 0 до 100). Чем больше уровень, тем больше шакалов. Для отмены введите /cancel",
+            api.SendTextMessageAsync(message.Chat.Id, "Отлично, а теперь укажите уровень шакализации (целое число от 0 до 100). Чем больше уровень, тем больше шакалов. Для отмены введите /cancel",
+                ParseMode.Default,
+                false,
                 false,
                 0,
                 new ReplyKeyboardMarkup
                 {
-                    Keyboard = new string[][]
+                    Keyboard = new KeyboardButton[][]
                     {
-                        new [] {"49" },
-                        new [] {"80" },
-                        new [] {"90" },
-                        new [] { "95", "96", "97", "98", "99", "100" }
+                        new [] {new KeyboardButton("49"),  },
+                        new [] {new KeyboardButton("80") },
+                        new [] {new KeyboardButton("90") },
+                        new [] { new KeyboardButton("95"), new KeyboardButton("96"), new KeyboardButton("97"), new KeyboardButton("98"), new KeyboardButton("99"), new KeyboardButton("100") }
                     },
                     OneTimeKeyboard = true
                 });
             return this;
         }
-        public override TelegramMessageHandler CommandHelp(ShakalSession session, Api api, Message message, object state)
+        public override TelegramMessageHandler CommandHelp(ShakalSession session, TelegramBotClient api, Message message, object state)
         {
-            api.SendTextMessage(message.Chat.Id, "Укажите уровень шакализации (целое число от 0 до 100). Чем больше уровень, тем больше шакалов. Для отмены введите /cancel");
+            api.SendTextMessageAsync(message.Chat.Id, "Укажите уровень шакализации (целое число от 0 до 100). Чем больше уровень, тем больше шакалов. Для отмены введите /cancel");
             return this;
         }
-        public override TelegramMessageHandler HandleMessage(ShakalSession session, Api api, Message message, object state)
+        public override TelegramMessageHandler HandleMessage(ShakalSession session, TelegramBotClient api, Message message, object state)
         {
             if (message.Type == MessageType.TextMessage)
             {

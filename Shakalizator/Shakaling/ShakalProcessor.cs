@@ -8,6 +8,8 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using System.Threading;
 using System.Drawing;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shakalizator.Shakaling
 {
@@ -26,25 +28,27 @@ namespace Shakalizator.Shakaling
             Document = document;
             ShakalLevel = shakalLevel;
         }
-        public override TelegramMessageHandler CommandStart(ShakalSession session, Api api, Message message, object state)
+        public override TelegramMessageHandler CommandStart(ShakalSession session, TelegramBotClient api, Message message, object state)
         {
-            api.SendTextMessage(message.Chat.Id, "Зашакаливание скоро будет завершено. Обычно это занимает несколько секунд, но если я не буду отвечать, то попробуйте зашакалить картинку снова" + Emoji.GetEmoji(0x1F60C),
+            api.SendTextMessageAsync(message.Chat.Id, "Зашакаливание скоро будет завершено. Обычно это занимает несколько секунд, но если я не буду отвечать, то попробуйте зашакалить картинку снова" + Emoji.GetEmoji(0x1F60C),
+                ParseMode.Default,
+                false,
                 false,
                 0,
-                new ReplyKeyboardHide
+                new ReplyKeyboardRemove()
                 {
-                    HideKeyboard = true
+                    RemoveKeyboard = true,
                 });
             BeginShakal(session, api, message.Chat.Id, Files, ShakalLevel);
             return this;
         }
-        public override TelegramMessageHandler HandleMessage(ShakalSession session, Api api, Message message, object state)
+        public override TelegramMessageHandler HandleMessage(ShakalSession session, TelegramBotClient api, Message message, object state)
         {
-            api.SendTextMessage(message.Chat.Id, "Подождите, зашакаливание еще не завершено");
+            api.SendTextMessageAsync(message.Chat.Id, "Подождите, зашакаливание еще не завершено");
             return base.HandleMessage(session, api, message, state);
         }
 
-        public void BeginShakal(ShakalSession session, Api api, long chatId, File[] files, int shakalLevel)
+        public void BeginShakal(ShakalSession session, TelegramBotClient api, long chatId, File[] files, int shakalLevel)
         {
             new Thread(() =>
             {
@@ -52,22 +56,22 @@ namespace Shakalizator.Shakaling
                 {
                     var photo = files.Last();
 
-                    var file = api.GetFile(photo.FileId).Result;
+                    var file = api.GetFileAsync(photo.FileId).Result;
 
                     var fileName = chatId + ".jpg";
                     var shakaled = Shakaler.ShakalPhoto(file.FileStream, shakalLevel);
                     shakaled.Position = 0;
 
-                    var res = api.SendDocument(chatId, new FileToSend(fileName, shakaled)).Result;
+                    var res = api.SendDocumentAsync(chatId, new FileToSend(fileName, shakaled)).Result;
                     Console.WriteLine(res);
 
-                    api.SendTextMessage(chatId, "Зашакаливание завершено" + Emoji.GetEmoji(0x1F438));
+                    api.SendTextMessageAsync(chatId, "Зашакаливание завершено" + Emoji.GetEmoji(0x1F438));
                 }
                 catch
                 {
                     try
                     {
-                        api.SendTextMessage(chatId, "Ошибка при зашакаливании" + Emoji.GetEmoji(0x1F614));
+                        api.SendTextMessageAsync(chatId, "Ошибка при зашакаливании" + Emoji.GetEmoji(0x1F614));
                     }
                     catch
                     {

@@ -20,7 +20,7 @@ namespace Shakalizator.TelegramCore
         {
             throw new Exception("CreateSession in abstract class");
         }
-        public virtual void HandleMessage(Api api, Message message, object state)
+        public virtual void HandleMessage(TelegramBotClient api, Message message, object state)
         {
             var chatId = message.Chat.Id;
             TelegramSession session;

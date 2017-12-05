@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace Shakalizator.TelegramCore
 {
@@ -12,9 +13,9 @@ namespace Shakalizator.TelegramCore
     {
         private TelegramMessageHandler currentHandler;
         public virtual TelegramLogic Logic { get; set; }
-        public virtual TelegramMessageHandler DefaultHandler { get; }
-        public virtual TelegramMessageHandler HelpHandler { get; }
-        public virtual TelegramMessageHandler StartHandler { get; }
+        public abstract TelegramMessageHandler DefaultHandler { get; }
+        public abstract TelegramMessageHandler HelpHandler { get; }
+        public abstract TelegramMessageHandler StartHandler { get; }
         public virtual TelegramMessageHandler CurrentHandler
         {
             get
@@ -34,7 +35,7 @@ namespace Shakalizator.TelegramCore
             }
         }
 
-        public virtual void HandleMessage(Api api, Message message, object state)
+        public virtual void HandleMessage(TelegramBotClient api, Message message, object state)
         {
             if (message.Type == MessageType.TextMessage)
             {

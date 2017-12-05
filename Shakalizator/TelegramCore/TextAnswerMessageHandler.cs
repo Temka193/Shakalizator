@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shakalizator.TelegramCore
 {
@@ -25,9 +27,9 @@ namespace Shakalizator.TelegramCore
             Text = text;
         }
 
-        public override TelegramMessageHandler HandleMessage(TelegramSession session, Api api, Message message, object state)
+        public override TelegramMessageHandler HandleMessage(TelegramSession session, TelegramBotClient api, Message message, object state)
         {
-            api.SendTextMessage(message.Chat.Id, Text, DisableWebPagePreview, ReplyToMessageId, ReplyMarkup, IsMarkdown);
+            api.SendTextMessageAsync(message.Chat.Id, Text, IsMarkdown ? ParseMode.Markdown : ParseMode.Default, DisableWebPagePreview, false, ReplyToMessageId, ReplyMarkup);
             return this;
         }
     }

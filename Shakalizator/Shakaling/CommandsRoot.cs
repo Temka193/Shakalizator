@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Shakalizator.TelegramCore;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace Shakalizator.Shakaling
 {
@@ -17,12 +18,12 @@ namespace Shakalizator.Shakaling
             Commands = new Dictionary<string, TelegramMessageHandler>();
         }
 
-        public override TelegramMessageHandler CommandHelp(ShakalSession session, Api api, Message message, object state)
+        public override TelegramMessageHandler CommandHelp(ShakalSession session, TelegramBotClient api, Message message, object state)
         {
             session.HelpHandler.HandleMessage(session, api, message, state);
             return this;
         }
-        public override TelegramMessageHandler HandleMessage(ShakalSession session, Api api, Message message, object state)
+        public override TelegramMessageHandler HandleMessage(ShakalSession session, TelegramBotClient api, Message message, object state)
         {
             if (message.Type == MessageType.PhotoMessage)
             {
